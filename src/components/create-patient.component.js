@@ -23,10 +23,6 @@ const tailLayout = {
 const dateFormat = 'DD/MM/YYYY';
 
 
-const onFinish = (values) => {
-    console.log('From component .js Success:', values);
-  };
-
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
