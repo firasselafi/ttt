@@ -12,7 +12,7 @@ app.use(express.json());
 
 const uri = process.env.ATLAS_DB_URI;
 
-mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(uri, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});
 
 const connection = mongoose.connection;
 
@@ -21,8 +21,10 @@ connection.once('open', () => {
 });    
 
 const patientsRouter = require('./routes/patients');
+const consultationsRouter = require('./routes/consultations')
 
 app.use('/patients', patientsRouter);
+app.use('/doctors', consultationsRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
