@@ -1,32 +1,20 @@
-import React from "react";
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+
 import { Form, Input, Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 
-const layout = {
-   labelCol: {
-      span: 2,
-   },
-   wrapperCol: {
-      span: 8,
-   },
-};
 
-const tailLayout = {
-   wrapperCol: {
-      offset: 9,
-      span: 16,
-   },
-};
 
-const Ordonnance = ({ onFinish, onFinishFailed }) => {
-   return (
-      <>
-         <Form.Item>
-            <h3>Prescription</h3>
-         </Form.Item>
+export class Ordonnance extends Component {
+ 
+   render() {
+      return (
+<>
+
          <Form.Item
             label='Drug name'
-            name='drugname'
+            name={'drugname' + this.props.index}
             rules={[
                {
                   message: "Please enter the drug name",
@@ -37,7 +25,7 @@ const Ordonnance = ({ onFinish, onFinishFailed }) => {
 
          <Form.Item
             label='Dose'
-            name='dose'
+            name={'dose' + this.props.index}
             rules={[
                {
                   message: "Please enter the dose",
@@ -48,7 +36,7 @@ const Ordonnance = ({ onFinish, onFinishFailed }) => {
 
          <Form.Item
             label='Duration'
-            name='duration'
+            name={'duration' + this.props.index }
             rules={[
                {
                   message: "Please enter the duration",
@@ -57,13 +45,10 @@ const Ordonnance = ({ onFinish, onFinishFailed }) => {
             <Input placeholder='duration' prefix={<UserOutlined />} />
          </Form.Item>
 
-         <Form.Item>
-            <Button type='primary' htmlType='submit'>
-               Add a drug
-            </Button>
-         </Form.Item>
-      </>
-   );
-};
 
-export default Ordonnance;
+      </>
+      )
+   }
+}
+
+export default Ordonnance

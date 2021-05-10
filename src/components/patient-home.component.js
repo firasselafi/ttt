@@ -9,6 +9,7 @@ import CreatePatient from "../components/create-patient.component";
 import Doctor from "./doctor-home.component";
 import EditPatient from "../components/edit-patient.component";
 import DeletePatient from "../components/delete-patient.component";
+import PatientList from "../components/PatientList.component";
 const { Header, Content, Sider } = Layout;
 
 
@@ -38,14 +39,11 @@ export default class PatientHome extends Component {
             <span>Add Patient</span>
             <Link to="/patients/create" />
             </Menu.Item>
-            <Menu.Item key="3" icon={<UserSwitchOutlined />}>
-            <span>Edit Patient</span>
-            <Link to="/patients/edit" />
+            <Menu.Item key="3" icon={<UserDeleteOutlined />}>
+            <span>Patient List</span>
+            <Link to="/patients/list" />
             </Menu.Item>
-            <Menu.Item key="4" icon={<UserDeleteOutlined />}>
-            <span>Delete Patient</span>
-            <Link to="/patients/delete" />
-            </Menu.Item>
+
           </Menu>
         </Sider>
         <Layout>
@@ -54,9 +52,9 @@ export default class PatientHome extends Component {
             <div className="site-layout-background" style={{ padding: 24, minHeight: 700 }}>
 
           <Route path="/patients/create" exact component={CreatePatient}/>
-          <Route path="/patients/edit" exact component={EditPatient}/>
+          <Route path="/patients/edit" component={EditPatient}/>
           <Route path="/patients/delete" exact component={DeletePatient}/>
-
+          <Route path="/patients/list" exact component={PatientList}/>
             </div>  
           </Content>
           

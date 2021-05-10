@@ -4,6 +4,7 @@ import { UserOutlined, PhoneOutlined, MailOutlined, IdcardOutlined, FieldNumberO
 import axios from 'axios';
 import moment from 'moment';
 import locale from 'antd/es/date-picker/locale/fr_FR';
+import {BrowserRouter as Router, useParams} from "react-router-dom";
 
 
 const { Option } = Select;
@@ -31,6 +32,30 @@ const dateFormat = 'DD/MM/YYYY';
     console.log('Failed:', errorInfo);
   };
 
+  // getting id by url
+  var str = window.location.href;
+  var patientIdTable = str.split("/");
+  var patientLinkID = patientIdTable[5];
+
+
+// patientData[0].genders
+
+
+// getting the patient data
+  
+//  const onLoadGet = async(patientLinkID) => {
+//     await axios.get('http://localhost:5000/patients/getbyid/'+patientLinkID)
+//   .then(response => {
+//     patientData = response.data;
+//     console.log("inside the promise:" , patientData[0])
+
+
+//   } )
+//   .catch( (error) =>  console.log(error))
+// }
+
+
+
 export default class CreatePatient extends Component {
     constructor(props) {
         super(props);
@@ -44,9 +69,14 @@ export default class CreatePatient extends Component {
         this.onChangeInsuranceNumber = this.onChangeInsuranceNumber.bind(this);
         this.onChangeAllergies = this.onChangeAllergies.bind(this);
         this.onChangeId = this.onChangeId.bind(this);
+        this.onChangeEmail = this.onChangeEmail.bind(this);
+
+        this.loadData = this.loadData.bind(this);
+
+
+
         this.onSubmit = this.onSubmit.bind(this);
         
-
 
         this.state = {
             firstname: '',
@@ -58,10 +88,13 @@ export default class CreatePatient extends Component {
             allergies: 'no allergies known',
             insuranceNumber: '',
             id: '',
+            email: '',
+            patientData: null,
 
 
         }
 
+        
 
     }
     
@@ -90,13 +123,15 @@ export default class CreatePatient extends Component {
     }
 
     onChangeBloodType(e) {
+      console.log(e);
       this.setState({
-          bloodType: e.target.value
+          bloodType: e
          
       })
   }
 
   onChangePhoneNumber(e) {
+    console.log(e);
     this.setState({
         phoneNumber: e.target.value
        
@@ -123,18 +158,87 @@ onChangeAllergies(e) {
     })
   }
 
+  onChangeEmail(e) {
+    this.setState({
+        email: e.target.value
+       
+    })
+  }
+
+
+    
+
+ componentDidMount() {
+
+  const onLoadGet = (patientLinkID) =>  {
+    axios.get('http://localhost:5000/patients/getbyid/'+patientLinkID)
+  .then(response => {
+    this.setState({
+      firstname:  response.data[0].firstname,
+      lastname: response.data[0].lastname,
+      gender: response.data[0].gender,
+      date: response.data[0].date,
+      bloodType: response.data[0].bloodType,
+      phoneNumber: response.data[0].phoneNumber,
+      allergies: response.data[0].allergies,
+      insuranceNumber: response.data[0].insuranceNumber,
+      email: response.data[0].email,
+      id:  response.data[0].firstname,
+
+    })
+
+    console.log("inside the promise:" , this.state.patientData[0])
+
+  } )
+  .catch( (error) =>  console.log(error))
+}
+
+  onLoadGet(patientLinkID);
+
+  //******************************************************************* */
+
+
+}
+  
 
     onSubmit(patient) {
       
-        axios.patch('http://localhost:5000/patients/edit/'+patient.id, patient)
-         .then(res => console.log(res.data), alert("Patient updated!"))
+        axios.patch('http://localhost:5000/patients/edit/'+patientLinkID, patient)
+         .then(res => console.log(res.data))
        // window.location = '/';
     }
 
-    render() {
-        return(
-          <div>
+    
+
+    loadData = () => {
+
+      console.log('this is before' , this.state.firstname);
+  
+      if(this.state.patientData != null) {
+        console.log('patient data is filled !');
+       
+  
+        
+            this.setState({
+
+             
+  
+            })
+  
             
+      }
+    }
+
+
+
+
+    render() {
+      
+      
+        return(
+          
+          <div>
+           
           <Form
           {...layout}
           name="basic"
@@ -149,9 +253,10 @@ onChangeAllergies(e) {
             value={this.state.id}
             onChange={this.onChangeId}
           >
-            <Input prefix={<IdcardOutlined />}/>
+            <div><Input defaultValue={patientLinkID} prefix={<IdcardOutlined />}/></div>
+            
           </Form.Item>
-
+          
           <Form.Item
             label="Firstname"
             name="firstname"
@@ -163,8 +268,16 @@ onChangeAllergies(e) {
             ]}
             value={this.state.firstname}
             onChange={this.onChangeFirstname}
+
           >
-            <Input prefix={<UserOutlined />}/>
+
+            <div>
+            <Input value={this.state.firstname} prefix={<UserOutlined />}/> 
+            </div>
+              {/* <p style={{ color: 'white' }}>
+              {this.state.firstname}
+              </p> */}
+            {/*defaultValue={this.state.firstname} */}
           </Form.Item>
 
           <Form.Item
@@ -179,7 +292,8 @@ onChangeAllergies(e) {
             value={this.state.lastname}
             onChange={this.onChangeLastname}
           >
-            <Input prefix={<UserOutlined />}/>
+            <div><Input value={this.state.lastname} prefix={<UserOutlined />}/></div>
+            
           </Form.Item>
     
             <Form.Item
@@ -188,11 +302,13 @@ onChangeAllergies(e) {
                 value={this.state.gender}
                 onChange={this.onChangeGender}
             >
-                <Radio.Group initialValues="a" buttonStyle="solid">
+              <div>
+                <Radio.Group value={this.state.gender} buttonStyle="solid">
                 <Radio.Button value="male">Male</Radio.Button>
                 <Radio.Button value="female">Female</Radio.Button>
                 <Radio.Button value="other">Other</Radio.Button>
                 </Radio.Group>
+                </div>
             </Form.Item>
     
             <Form.Item
@@ -200,29 +316,33 @@ onChangeAllergies(e) {
               name="date"
               onChange={this.onChangeDate}
 
-
-            >
+            >   
+            
                   <DatePicker
                   format={dateFormat}
                   locale={locale}
                   style={{ width: '30%' }}
-                  defaultValue={moment('2015/01/01', dateFormat)}
-                  initialValue={moment('2015/01/01', dateFormat)}
+                  value={this.state.date}
+                  defaultValue={moment("2015/01/01", dateFormat)}
+                  
                   />
-
+               
             </Form.Item>
 
             <Form.Item
               label="Blood type"
-              name="bloodType"
+              
               value={this.state.bloodType}
-              onChange={this.onChangeBloodType}
+             
             >
-
+              
                 <Select
 
                   style={{ width: 80, margin: '0 8px' }}
-                  defaultValue="A+"
+                  
+                  value={this.state.bloodType}
+                  name="bloodType"
+                  onChange={this.onChangeBloodType.bind(this)}
                  >
                   <Option value="A+">A+</Option>
                   <Option value="A-">A-</Option>
@@ -233,6 +353,7 @@ onChangeAllergies(e) {
                   <Option value="AB+">AB+</Option>
                   <Option value="AB-">AB-</Option>
                 </Select>
+               
           </Form.Item>
 
          
@@ -243,7 +364,8 @@ onChangeAllergies(e) {
             value={this.state.insuranceNumber}
             onChange={this.onChangeInsuranceNumber}
           >
-            <Input prefix={<FieldNumberOutlined />}/>
+            <div><Input value={this.state.insuranceNumber} prefix={<FieldNumberOutlined />}/></div>
+            
           </Form.Item>
 
 
@@ -253,7 +375,8 @@ onChangeAllergies(e) {
             initialValue={this.state.allergies}
             onChange={this.onChangeAllergies}
           >
-            <TextArea defaultValue="no allergies known" rows={4} />
+            <div><TextArea value={this.state.allergies}  defaultValue="no allergies known" rows={4} /></div>
+            
           </Form.Item>
 
 
@@ -272,7 +395,7 @@ onChangeAllergies(e) {
             onChange={this.onChangePhoneNumber}
             >
     
-            <Input prefix={<PhoneOutlined />}/>
+            <div><Input value={this.state.phoneNumber} prefix={<PhoneOutlined />}/></div>
             
              </Form.Item>
     
@@ -287,12 +410,14 @@ onChangeAllergies(e) {
               },
             ]}
           >
+            <div>
             <Input
               style={{ width: "100%" }}
               placeholder="Email"
               prefix={<MailOutlined />}
+              value={this.state.email}
             />
-
+            </div>
             
              </Form.Item>
     
@@ -301,6 +426,11 @@ onChangeAllergies(e) {
             <Button type="primary" htmlType="submit">
               Submit 
             </Button>
+
+            <Button type="primary" onClick={ () => this.loadData() }>
+              clg 
+            </Button>
+            
           </Form.Item>
 
         

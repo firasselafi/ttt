@@ -32,14 +32,16 @@ router.route('/create').post((req, res) => {
         duration,
         drugs:[ {
             name: drugs.name,
-            dose: drugs.dose
+            dose: drugs.dose,
+            
         }]
-
-
 
 
     })
 
+    // newFiche.save()
+    // .then(() => res.json('Consultation added!'))
+    // .catch( err => res.status(400).json('Error: ' + err));
 
     newFiche.save()
         .then( () => {
@@ -52,6 +54,11 @@ router.route('/create').post((req, res) => {
         .catch( err => res.status(400).json('Error: ' + err));
         
     
+
+
+
+
+
     // newOrdonnance.save()
     //     .then( () => res.json('Ordonnace added!'))
     //     .catch( err => res.status(400).json('Error: ' + err));

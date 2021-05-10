@@ -120,7 +120,7 @@ export default class CreatePatient extends Component {
          .post("http://localhost:5000/patients/create", patient)
          .then((res) => console.log(res.data));
 
-      // window.location = '/';
+       window.location = '/patients/list';
    }
 
    render() {
@@ -137,6 +137,7 @@ export default class CreatePatient extends Component {
                   rules={[
                      {
                         message: "Firstname is required",
+                        required: true
                      },
                   ]}
                   value={this.state.firstname}
@@ -150,6 +151,7 @@ export default class CreatePatient extends Component {
                   rules={[
                      {
                         message: "Lastname is required",
+                        required: true
                      },
                   ]}
                   value={this.state.lastname}
@@ -160,6 +162,12 @@ export default class CreatePatient extends Component {
                <Form.Item
                   label='Gender'
                   name='gender'
+                  rules={[
+                     {
+                        message: "Gender is required",
+                        required: true
+                     },
+                  ]}
                   value={this.state.gender}
                   onChange={this.onChangeGender}>
                   <Radio.Group initialValues='a' buttonStyle='solid'>
@@ -172,6 +180,12 @@ export default class CreatePatient extends Component {
                <Form.Item
                   label='Birth Date'
                   name='date'
+                  rules={[
+                     {
+                        message: "Date is required",
+                        required: true
+                     },
+                  ]}
                   onChange={this.onChangeDate}>
                   <DatePicker
                      format={dateFormat}
@@ -185,6 +199,12 @@ export default class CreatePatient extends Component {
                <Form.Item
                   label='Blood type'
                   name='bloodType'
+                  rules={[
+                     {
+                        message: "Blood Type is required",
+                        required: true
+                     },
+                  ]}
                   value={this.state.bloodType}
                   onChange={this.onChangeBloodType}>
                   <Select
@@ -202,8 +222,14 @@ export default class CreatePatient extends Component {
                </Form.Item>
 
                <Form.Item
-                  label='ID'
+                  label='ID Card Number'
                   name='id'
+                  rules={[
+                     {
+                        message: "ID Card Number is required",
+                        required: true
+                     },
+                  ]}
                   value={this.state.id}
                   onChange={this.onChangeId}>
                   <Input prefix={<IdcardOutlined />} />
@@ -212,6 +238,7 @@ export default class CreatePatient extends Component {
                <Form.Item
                   label='Insurance number'
                   name='insuranceNumber'
+
                   value={this.state.insuranceNumber}
                   onChange={this.onChangeInsuranceNumber}>
                   <Input prefix={<FieldNumberOutlined />} />
@@ -220,9 +247,15 @@ export default class CreatePatient extends Component {
                <Form.Item
                   label='Allergies'
                   name='allergies'
+                  rules={[
+                     {
+                        message: "Allergies is required",
+                        required: true
+                     },
+                  ]}
                   initialValue={this.state.allergies}
                   onChange={this.onChangeAllergies}>
-                  <TextArea defaultValue='no allergies known' rows={4} />
+                  <TextArea rows={4} />
                </Form.Item>
 
                <Form.Item
@@ -230,7 +263,8 @@ export default class CreatePatient extends Component {
                   name='phoneNumber'
                   rules={[
                      {
-                        message: "Lastname is required",
+                        message: "PhoneNumber is required",
+                        required: true
                      },
                   ]}
                   value={this.state.phoneNumber}

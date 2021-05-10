@@ -7,9 +7,9 @@ const ficheSchema = new Schema({
 
     medicalHistory: {type: String},
     signes: {type: String},
-    weight: {type: Number},
-    bloodPressure: {type: Number},
-    temperature: {type: Number},
+    weight: {type: String},
+    bloodPressure: {type: String},
+    temperature: {type: String},
     
 
 }, {

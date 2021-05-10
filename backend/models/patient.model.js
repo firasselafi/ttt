@@ -12,6 +12,8 @@ const patientSchema = new Schema({
     allergies: {type: String},
     insuranceNumber: {type: String},
     id: {type: String},
+    email: {type: String}
+    
 }, {
     timestamps: true
 });

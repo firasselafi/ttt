@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Menu} from 'antd';
-import { UserSwitchOutlined , UserDeleteOutlined, UserAddOutlined, HomeOutlined  } from '@ant-design/icons';
+import { FileAddOutlined  , UserDeleteOutlined, UserAddOutlined, HomeOutlined  } from '@ant-design/icons';
 import { BrowserRouter as Router, Route, Link} from "react-router-dom";
 import Appointments from './doctorComponents/Appointments.component';
 import Ordonnance from './doctorComponents/Ordonnance.component';
@@ -31,7 +31,7 @@ const Doctor = () => {
             <span>Appointments</span>
             <Link to="/doctors/appointments" />
             </Menu.Item>
-            <Menu.Item key="3" icon={<UserSwitchOutlined />}>
+            <Menu.Item key="3" icon={<FileAddOutlined />}>
             <span>Asgin Prescription</span>
             <Link to="/doctors/prescriptionsAssign" />
             </Menu.Item>
@@ -43,6 +43,7 @@ const Doctor = () => {
         </Sider>
         <Layout>
           <Header className="site-layout-sub-header-background" style={{ padding: 0 }} />
+
           <Content style={{ margin: '24px 16px 0' }}>
             <div className="site-layout-background" style={{ padding: 24, minHeight: 700 }}>
 

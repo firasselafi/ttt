@@ -1,5 +1,21 @@
 const router = require('express').Router();
+const { default: ColumnGroup } = require('antd/lib/table/ColumnGroup');
 let Patient = require('../models/patient.model');
+
+// get
+
+router.route('/get').get((req, res) => {
+    Patient.find()
+      .then(patients => res.json(patients), console.log('Patients Retrived!'))
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
+
+// get by id
+  router.route('/getbyid/:id').get((req, res) => {
+    Patient.find({ id: req.params.id})
+      .then(patients => res.json(patients), console.log('Patient to Update Retrived!'))
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
 
 
 // add route
@@ -13,6 +29,7 @@ router.route('/create').post((req, res) => {
     const allergies = req.body.allergies;
     const insuranceNumber = req.body.insuranceNumber;
     const id = req.body.id;
+    const email = req.body.email;
 
     const newPatient = new Patient({
         firstname,
@@ -24,6 +41,7 @@ router.route('/create').post((req, res) => {
         allergies,
         insuranceNumber,
         id,
+        email,
     });
 
     newPatient.save()
@@ -43,6 +61,7 @@ router.route('/delete/:id').delete((req, res) => {
 router.route('/edit/:id').patch((req, res) => {
     Patient.findOne({ id: req.params.id})
         .then(patient => {
+            console.log(req.body);
             if(req.body.firstname) patient.firstname = req.body.firstname;
             if(req.body.lastname)patient.lastname = req.body.lastname;
             if(req.body.gender) patient.gender = req.body.gender;
@@ -51,6 +70,9 @@ router.route('/edit/:id').patch((req, res) => {
             if(req.body.phoneNumber) patient.phoneNumber = req.body.phoneNumber;
             if(req.body.allergies)patient.allergies = req.body.allergies;
             if(req.body.insuranceNumber)patient.insuranceNumber = req.body.insuranceNumber;
+            if(req.body.email)patient.email = req.body.email;
+            if(req.body.id)patient.id = req.body.id;
+            // Object.assign(patient, req.body);
             patient.save();
         })
             .then( () => res.json('Patient updated!'))
