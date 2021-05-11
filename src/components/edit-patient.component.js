@@ -4,8 +4,7 @@ import { UserOutlined, PhoneOutlined, MailOutlined, IdcardOutlined, FieldNumberO
 import axios from 'axios';
 import moment from 'moment';
 import locale from 'antd/es/date-picker/locale/fr_FR';
-import {BrowserRouter as Router, useParams} from "react-router-dom";
-import { emphasize } from '@material-ui/core';
+
 
 
 const { Option } = Select;
@@ -98,6 +97,7 @@ export default class CreatePatient extends Component {
     }
     
     onChangeFirstname(e) {
+      console.log('something');
         this.setState({
             firstname: e.target.value
         });
@@ -124,8 +124,7 @@ export default class CreatePatient extends Component {
 
     onChangeBloodType(e) {
 
-      console.log('this is e', e);
-      console.log('this is e value',e.target.value);
+      console.log(e);
    
         this.setState({
           // bloodType: e.target.value
@@ -327,7 +326,7 @@ onChangeAllergies(e) {
               </div>
             </Form.Item>
 
-           <div>
+            <div>
             <Form.Item
               label="Blood type"
               name="bloodType"
@@ -335,7 +334,7 @@ onChangeAllergies(e) {
               
              
             >
-               <div>
+               
                 <Select
                  
                   style={{ width: 95, margin: '0 8px' }}
@@ -354,11 +353,11 @@ onChangeAllergies(e) {
                   <Option value="AB-">AB-</Option>
                   
                 </Select>
-                </div>
+                
                
           </Form.Item>
+          
           </div>
-         
 
           <Form.Item
             label="Insurance number"
