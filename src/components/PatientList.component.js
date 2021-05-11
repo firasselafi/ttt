@@ -47,8 +47,8 @@ onEdit = () => {
               <Column title="First Name" dataIndex="firstname" key="firstname" />
               <Column title="Last Name" dataIndex="lastname" key="lastname" />
             </ColumnGroup>
-            <Column title="Age" dataIndex="age" key="age" />
-            <Column title="Address" dataIndex="address" key="address" />
+            <Column title="ID card" dataIndex="id" key="id" />
+            
     
             <Column
               title="Action"

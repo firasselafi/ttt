@@ -207,9 +207,11 @@ export default class CreatePatient extends Component {
                   ]}
                   value={this.state.bloodType}
                   onChange={this.onChangeBloodType}>
+
                   <Select
-                     style={{ width: 80, margin: "0 8px" }}
-                     defaultValue='A+'>
+                     style={{ width: 95, margin: "0 8px" }}
+                     defaultValue='Select'>
+                     <Option value='unkown'>unkown</Option>
                      <Option value='A+'>A+</Option>
                      <Option value='A-'>A-</Option>
                      <Option value='B+'>B+</Option>

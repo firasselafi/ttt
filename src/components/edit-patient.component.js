@@ -5,6 +5,7 @@ import axios from 'axios';
 import moment from 'moment';
 import locale from 'antd/es/date-picker/locale/fr_FR';
 import {BrowserRouter as Router, useParams} from "react-router-dom";
+import { emphasize } from '@material-ui/core';
 
 
 const { Option } = Select;
@@ -71,8 +72,6 @@ export default class CreatePatient extends Component {
         this.onChangeId = this.onChangeId.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
 
-        this.loadData = this.loadData.bind(this);
-
 
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -85,7 +84,7 @@ export default class CreatePatient extends Component {
             date: new Date(),
             bloodType: '',
             phoneNumber: '',
-            allergies: 'no allergies known',
+            allergies: '',
             insuranceNumber: '',
             id: '',
             email: '',
@@ -116,6 +115,7 @@ export default class CreatePatient extends Component {
     }
 
     onChangeDate(e) {
+      console.log(e);
         this.setState({
             date: e.target.value
            
@@ -123,15 +123,26 @@ export default class CreatePatient extends Component {
     }
 
     onChangeBloodType(e) {
-      console.log(e);
-      this.setState({
-          bloodType: e
+
+      console.log('this is e', e);
+      console.log('this is e value',e.target.value);
+   
+        this.setState({
+          // bloodType: e.target.value
+         bloodType: e,
          
       })
+
+      
+
   }
 
+
+
+
+
   onChangePhoneNumber(e) {
-    console.log(e);
+
     this.setState({
         phoneNumber: e.target.value
        
@@ -177,57 +188,43 @@ onChangeAllergies(e) {
       firstname:  response.data[0].firstname,
       lastname: response.data[0].lastname,
       gender: response.data[0].gender,
-      date: response.data[0].date,
+      date: moment(response.data[0].date).format('DD-MM-YYYY').toString(),
       bloodType: response.data[0].bloodType,
       phoneNumber: response.data[0].phoneNumber,
       allergies: response.data[0].allergies,
       insuranceNumber: response.data[0].insuranceNumber,
       email: response.data[0].email,
       id:  response.data[0].firstname,
+      //moment(this.state.date).format('YYYY-MM-DD')
 
-    })
-
-    console.log("inside the promise:" , this.state.patientData[0])
-
+    }) 
+   
   } )
+
   .catch( (error) =>  console.log(error))
 }
 
   onLoadGet(patientLinkID);
 
-  //******************************************************************* */
 
+
+  //******************************************************************* */
+ 
+  
 
 }
   
 
     onSubmit(patient) {
-      
+
+        console.log(typeof this.state.date , "the is = " , this.state.date);
+
         axios.patch('http://localhost:5000/patients/edit/'+patientLinkID, patient)
          .then(res => console.log(res.data))
+         
        // window.location = '/';
     }
 
-    
-
-    loadData = () => {
-
-      console.log('this is before' , this.state.firstname);
-  
-      if(this.state.patientData != null) {
-        console.log('patient data is filled !');
-       
-  
-        
-            this.setState({
-
-             
-  
-            })
-  
-            
-      }
-    }
 
 
 
@@ -274,10 +271,7 @@ onChangeAllergies(e) {
             <div>
             <Input value={this.state.firstname} prefix={<UserOutlined />}/> 
             </div>
-              {/* <p style={{ color: 'white' }}>
-              {this.state.firstname}
-              </p> */}
-            {/*defaultValue={this.state.firstname} */}
+
           </Form.Item>
 
           <Form.Item
@@ -310,40 +304,46 @@ onChangeAllergies(e) {
                 </Radio.Group>
                 </div>
             </Form.Item>
-    
+            
             <Form.Item
               label="Birth Date"
               name="date"
               onChange={this.onChangeDate}
-
+              
             >   
-            
+              <div>
+
                   <DatePicker
                   format={dateFormat}
                   locale={locale}
                   style={{ width: '30%' }}
-                  value={this.state.date}
-                  defaultValue={moment("2015/01/01", dateFormat)}
+                  value={moment(this.state.date, dateFormat)}
+
+                  //defaultValue={moment(this.state.date, dateFormat)}
+                  //moment(this.state.date).format(dateFormat)
+                  //moment(this.state.date).format('DD-MM-YYYY').toString()
                   
                   />
-               
+              </div>
             </Form.Item>
 
+           <div>
             <Form.Item
               label="Blood type"
+              name="bloodType"
               
-              value={this.state.bloodType}
+              
              
             >
-              
+               <div>
                 <Select
-
-                  style={{ width: 80, margin: '0 8px' }}
-                  
+                 
+                  style={{ width: 95, margin: '0 8px' }}
                   value={this.state.bloodType}
-                  name="bloodType"
-                  onChange={this.onChangeBloodType.bind(this)}
+                  onChange={this.onChangeBloodType}
+
                  >
+                   
                   <Option value="A+">A+</Option>
                   <Option value="A-">A-</Option>
                   <Option value="B+">B+</Option>
@@ -352,10 +352,12 @@ onChangeAllergies(e) {
                   <Option value="O-">O-</Option>
                   <Option value="AB+">AB+</Option>
                   <Option value="AB-">AB-</Option>
+                  
                 </Select>
+                </div>
                
           </Form.Item>
-
+          </div>
          
 
           <Form.Item
@@ -427,9 +429,6 @@ onChangeAllergies(e) {
               Submit 
             </Button>
 
-            <Button type="primary" onClick={ () => this.loadData() }>
-              clg 
-            </Button>
             
           </Form.Item>
 
