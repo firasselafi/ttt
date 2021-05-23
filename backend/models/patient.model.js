@@ -12,7 +12,9 @@ const patientSchema = new Schema({
     allergies: {type: String},
     insuranceNumber: {type: String},
     id: {type: String},
-    email: {type: String}
+    email: {type: String},
+    doctor: {type: mongoose.Schema.Types.ObjectId, ref: 'Doctor'},
+
     
 }, {
     timestamps: true

@@ -8,7 +8,7 @@ export class AddDrugButton extends Component {
     render() {
         return (
 
-            <Button type='primary' htmlType='submit' onClick={() => this.props.onAdd()}>
+            <Button type='primary' onClick={() => this.props.onAdd()}>
                Add a drug
             </Button>
 

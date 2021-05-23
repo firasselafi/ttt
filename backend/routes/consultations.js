@@ -1,6 +1,7 @@
 const router = require('express').Router();
 let Fiche = require('../models/fiche.model');
 let Ordonnance = require('../models/ordonnace.model');
+let Certification = require('../models/certification.model')
 // add route
 
 router.route('/create').post((req, res) => {
@@ -23,20 +24,28 @@ router.route('/create').post((req, res) => {
 
     });
 
-    const duration = req.body.duration;
+
 
     const drugs = req.body.drugs;
 
     const newOrdonnance = new Ordonnance({
         patientId,
-        duration,
-        drugs:[ {
-            name: drugs.name,
-            dose: drugs.dose,
+        drugs,
+        // drugs:[ {
+        //     name: drugs.name,
+        //     dose: drugs.dose,
             
-        }]
+        // }]
 
 
+    })
+
+    const certificateDescription = req.body.certificateDescription;
+    const certificateNbrDays = req.body.certificateNbrDays;
+
+    const newCertification = new Certification ({
+        certificateDescription,
+        certificateNbrDays,
     })
 
     // newFiche.save()
@@ -47,13 +56,13 @@ router.route('/create').post((req, res) => {
         .then( () => {
 
         newOrdonnance.save()
-            .then( () => res.json('Consultation & Ordonnace added!'))
+            .then( () => {        newCertification.save().then(res.json('Consultation & Ordonnace & Certificate added!')).catch( err => res.status(400).json('Error: ' + err))})
             .catch( err => res.status(400).json('Error: ' + err))
             })
         
         .catch( err => res.status(400).json('Error: ' + err));
         
-    
+
 
 
 

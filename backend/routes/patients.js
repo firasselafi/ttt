@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { default: ColumnGroup } = require('antd/lib/table/ColumnGroup');
+const Doctor = require('../models/doctor.model');
 let Patient = require('../models/patient.model');
 
 // get
@@ -19,7 +20,7 @@ router.route('/get').get((req, res) => {
 
 
 // add route
-router.route('/create').post((req, res) => {
+router.route('/create').post(async (req, res) => {
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
     const gender = req.body.gender;
@@ -30,6 +31,12 @@ router.route('/create').post((req, res) => {
     const insuranceNumber = req.body.insuranceNumber;
     const id = req.body.id;
     const email = req.body.email;
+    const doctor = req.body.doctor;
+
+    // const {
+    //     firstname,
+    //     lastName,
+    // } = req.body;
 
     const newPatient = new Patient({
         firstname,
@@ -42,7 +49,13 @@ router.route('/create').post((req, res) => {
         insuranceNumber,
         id,
         email,
+        doctor,
     });
+
+    const docObj = await Doctor.findById(doctor);
+    console.log(docObj);
+    docObj.patients.push(newPatient);
+    await docObj.save();
 
     newPatient.save()
         .then( () => res.json('Patient added!'))

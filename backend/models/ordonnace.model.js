@@ -6,12 +6,12 @@ const Schema = mongoose.Schema;
 const ordonnanceSchema = new Schema({
     patientId: {type: String},
 
-    duration: {type: String},
 
-    drugs: [{
-        name: {type: String},
-        dose: {type: String},
-    }],
+    drugs: [mongoose.Schema.Types.Mixed]
+    // drugs: [{
+    //     name: {type: String},
+    //     dose: {type: String},
+    // }],
 
 
 

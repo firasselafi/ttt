@@ -6,6 +6,8 @@ import {
    MailOutlined,
    IdcardOutlined,
    FieldNumberOutlined,
+   InfoCircleOutlined,
+   FieldTimeOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
 import moment from "moment";
@@ -16,7 +18,7 @@ const { TextArea } = Input;
 
 const layout = {
    labelCol: {
-      span: 2,
+      span: 3,
    },
    wrapperCol: {
       span: 16,
@@ -35,6 +37,22 @@ const onFinishFailed = (errorInfo) => {
    console.log("Failed:", errorInfo);
 };
 
+function onChange(value) {
+   console.log(`selected ${value}`);
+ }
+ 
+ function onBlur() {
+   console.log('blur');
+ }
+ 
+ function onFocus() {
+   console.log('focus');
+ }
+ 
+ function onSearch(val) {
+   console.log('search:', val);
+ }
+ 
 export default class CreatePatient extends Component {
    constructor(props) {
       super(props);
@@ -48,6 +66,7 @@ export default class CreatePatient extends Component {
       this.onChangeInsuranceNumber = this.onChangeInsuranceNumber.bind(this);
       this.onChangeAllergies = this.onChangeAllergies.bind(this);
       this.onChangeId = this.onChangeId.bind(this);
+      this.onChangeDoctor = this.onChangeDoctor.bind(this);
       this.onSubmit = this.onSubmit.bind(this);
 
       this.state = {
@@ -60,6 +79,7 @@ export default class CreatePatient extends Component {
          allergies: "no allergies known",
          insuranceNumber: "",
          id: "",
+         doctors : [],
       };
    }
 
@@ -115,12 +135,33 @@ export default class CreatePatient extends Component {
       });
    }
 
+   onChangeDoctor(e) {
+      this.setState({
+         docotr: e.target.value,
+      });
+   }
+   
+   async getDoctors() {
+      return axios.get("http://localhost:5000/doc").then(res => res.data);
+   }
+
+   async setDocs() {
+      const doctors = await this.getDoctors();
+      this.setState({
+         doctors
+      });
+   }
+
+   componentDidMount() {
+      this.setDocs();
+   }
+
    onSubmit(patient) {
       axios
          .post("http://localhost:5000/patients/create", patient)
          .then((res) => console.log(res.data));
 
-       window.location = '/patients/list';
+      //  window.location = '/patients/list';
    }
 
    render() {
@@ -134,6 +175,10 @@ export default class CreatePatient extends Component {
                <Form.Item
                   label='Firstname'
                   name='firstname'
+                  tooltip={{
+                     title: 'This is a required field',
+                     icon: <InfoCircleOutlined />,
+                   }}
                   rules={[
                      {
                         message: "Firstname is required",
@@ -148,6 +193,10 @@ export default class CreatePatient extends Component {
                <Form.Item
                   label='Lastname'
                   name='lastname'
+                  tooltip={{
+                     title: 'This is a required field',
+                     icon: <InfoCircleOutlined />,
+                   }}
                   rules={[
                      {
                         message: "Lastname is required",
@@ -162,6 +211,10 @@ export default class CreatePatient extends Component {
                <Form.Item
                   label='Gender'
                   name='gender'
+                  tooltip={{
+                     title: 'This is a required field',
+                     icon: <InfoCircleOutlined />,
+                   }}
                   rules={[
                      {
                         message: "Gender is required",
@@ -180,6 +233,10 @@ export default class CreatePatient extends Component {
                <Form.Item
                   label='Birth Date'
                   name='date'
+                  tooltip={{
+                     title: 'This is a required field',
+                     icon: <InfoCircleOutlined />,
+                   }}
                   rules={[
                      {
                         message: "Date is required",
@@ -199,6 +256,10 @@ export default class CreatePatient extends Component {
                <Form.Item
                   label='Blood type'
                   name='bloodType'
+                  tooltip={{
+                     title: 'This is a required field',
+                     icon: <InfoCircleOutlined />,
+                   }}
                   rules={[
                      {
                         message: "Blood Type is required",
@@ -226,6 +287,10 @@ export default class CreatePatient extends Component {
                <Form.Item
                   label='ID Card Number'
                   name='id'
+                  tooltip={{
+                     title: 'This is a required field',
+                     icon: <InfoCircleOutlined />,
+                   }}
                   rules={[
                      {
                         message: "ID Card Number is required",
@@ -240,7 +305,10 @@ export default class CreatePatient extends Component {
                <Form.Item
                   label='Insurance number'
                   name='insuranceNumber'
-
+                  tooltip={{
+                     title: 'This is field can be filled later',
+                     icon: <FieldTimeOutlined />,
+                   }}
                   value={this.state.insuranceNumber}
                   onChange={this.onChangeInsuranceNumber}>
                   <Input prefix={<FieldNumberOutlined />} />
@@ -249,6 +317,10 @@ export default class CreatePatient extends Component {
                <Form.Item
                   label='Allergies'
                   name='allergies'
+                  tooltip={{
+                     title: 'This is a required field',
+                     icon: <InfoCircleOutlined />,
+                   }}
                   rules={[
                      {
                         message: "Allergies is required",
@@ -263,6 +335,10 @@ export default class CreatePatient extends Component {
                <Form.Item
                   label='PhoneNumber'
                   name='phoneNumber'
+                  tooltip={{
+                     title: 'This is a required field',
+                     icon: <InfoCircleOutlined />,
+                   }}
                   rules={[
                      {
                         message: "PhoneNumber is required",
@@ -277,6 +353,10 @@ export default class CreatePatient extends Component {
                <Form.Item
                   label='Email'
                   name='email'
+                  tooltip={{
+                     title: 'This is field can be filled later',
+                     icon: <FieldTimeOutlined />,
+                   }}
                   rules={[
                      {
                         type: "email",
@@ -290,11 +370,44 @@ export default class CreatePatient extends Component {
                   />
                </Form.Item>
 
+               <Form.Item
+                 label='Doctor'
+                 name='doctor'
+                                 value={this.state.doctor}
+                                 onChange={this.onChangeDoctor}
+               >
+               <Select
+                  showSearch
+                  style={{ width: 200 }}
+                  placeholder="Select a person"
+                  optionFilterProp="children"
+                  onChange={onChange}
+                  onFocus={onFocus}
+                  onBlur={onBlur}
+                  onSearch={onSearch}
+                  filterOption={(input, option) =>
+                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+
+               >
+                    {
+                       this.state.doctors.map((doc) =>  {
+                          return (
+                           <Option value={doc._id}>{doc.firstname + ' ' + doc.lastname}</Option>
+                          );
+                       })
+                    }
+                  </Select>
+
+               </Form.Item>
+
                <Form.Item {...tailLayout}>
                   <Button type='primary' htmlType='submit'>
                      Submit
                   </Button>
                </Form.Item>
+
+
             </Form>
          </div>
       );
