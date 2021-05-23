@@ -8,7 +8,13 @@ const doctorSchema = new Schema({
     speciality: {type: String},
     patients:[{ 
         type: Schema.ObjectId, 
-        ref: 'Patient' }]
+        ref: 'Patient' }],
+    username: {
+        type: String
+    },
+    password: {
+        type: String,
+    }
 
 });
 

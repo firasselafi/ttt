@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const auth = require('./middlewares/auth');
+
 
 require('dotenv').config();
 
@@ -23,10 +25,13 @@ connection.once('open', () => {
 const patientsRouter = require('./routes/patients');
 const consultationsRouter = require('./routes/consultations')
 const DocotorRouter = require("./routes/doctor");
+const AuthRouter = require("./routes/auth");
+
 
 app.use('/patients', patientsRouter);
-app.use('/doctors', consultationsRouter);
-app.use("/doc", DocotorRouter)
+app.use('/doctors', auth, consultationsRouter);
+app.use("/doc", auth, DocotorRouter);
+app.use("/auth", AuthRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
