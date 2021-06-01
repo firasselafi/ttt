@@ -10,10 +10,11 @@ import Doctor from "./doctor-home.component";
 import EditPatient from "../components/edit-patient.component";
 import DeletePatient from "../components/delete-patient.component";
 import PatientList from "../components/PatientList.component";
+import { AuthGuard } from './authGuard';
 const { Header, Content, Sider } = Layout;
 
 
-export default class PatientHome extends Component {
+class PatientHome extends Component {
   
   render() {
       return (
@@ -68,3 +69,5 @@ export default class PatientHome extends Component {
   }
 
 }
+
+export default AuthGuard(PatientHome);

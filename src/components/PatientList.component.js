@@ -3,11 +3,13 @@ import axios from 'axios';
 import { Table, Button, Space, Popconfirm, Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
+import { AuthGuard } from './authGuard';
+
 
 const { Column, ColumnGroup } = Table;
 
 
-export class PatientList extends Component {
+class PatientList extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -150,8 +152,7 @@ onEdit = () => {
     }
 }
 
-export default PatientList
-
+export default AuthGuard(PatientList);
 
 
 

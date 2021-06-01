@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserDeleteOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import { AuthGuard } from './authGuard';
+
 
 const layout = {
   labelCol: {
@@ -24,7 +26,7 @@ const tailLayout = {
     console.log('Failed:', errorInfo);
   };
 
-export default class CreatePatient extends Component {
+class CreatePatient extends Component {
     constructor(props) {
         super(props);
 
@@ -96,3 +98,5 @@ export default class CreatePatient extends Component {
         )
     }
 }
+
+export default AuthGuard(CreatePatient);

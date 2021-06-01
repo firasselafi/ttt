@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Link} from "react-router-dom";
 import Appointments from './doctorComponents/Appointments.component';
 import Ordonnance from './doctorComponents/Ordonnance.component';
 import AssignPrescription from './doctorComponents/AssignPrescription.component';
+import { AuthGuard } from './authGuard';
 const { Header, Content, Sider } = Layout;
 
 const Doctor = () => {
@@ -63,4 +64,4 @@ const Doctor = () => {
   )
 }
 
-export default Doctor
+export default AuthGuard(Doctor);

@@ -4,6 +4,7 @@ import { UserOutlined, PhoneOutlined, MailOutlined, IdcardOutlined, FieldNumberO
 import axios from 'axios';
 import moment from 'moment';
 import locale from 'antd/es/date-picker/locale/fr_FR';
+import { AuthGuard } from './authGuard';
 
 
 
@@ -55,8 +56,7 @@ const dateFormat = 'DD/MM/YYYY';
 // }
 
 
-
-export default class CreatePatient extends Component {
+class CreatePatient extends Component {
     constructor(props) {
         super(props);
 
@@ -438,3 +438,5 @@ onChangeAllergies(e) {
         )
     }
 }
+
+export default AuthGuard(CreatePatient);

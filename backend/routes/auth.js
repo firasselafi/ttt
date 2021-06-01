@@ -2,30 +2,37 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const Doctor = require('../models/doctor.model');
 const jwt = require('jsonwebtoken');
+const Assisstance = require('../models/assisstance.model');
 
 router.post("/login", async (req, res) => {
     const {
         username,
-        password
+        password,
+        type
     } = req.body;
 
-    const doc = await Doctor.findOne({ username });
+    if (!type) {
+        res.status(400).json({});
+        return;
+    }
 
-    if (!doc) {
+    const user = ( type === "doctors") ? await Doctor.findOne({ username }) : await Assisstance.findOne({username});
+
+    if (!user) {
         res.status(401).json({});
         return;
     }
 
-    if (!(await bcrypt.compare(password, doc.password))) {
+    if (!(await bcrypt.compare(password, user.password))) {
         // password incorrect
         res.status(401).json({});
         return;
     }
 
-    delete doc.password;
+    delete user.password;
 
     const secret = process.env.JWT_SECRET || "secret";
-    const token = jwt.sign(doc.toObject(), secret);
+    const token = jwt.sign(user.toObject(), secret);
 
     res.json({
         token

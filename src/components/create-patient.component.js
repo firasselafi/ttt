@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import moment from "moment";
 import locale from "antd/es/date-picker/locale/fr_FR";
+import { AuthGuard } from './authGuard';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -53,7 +54,7 @@ function onChange(value) {
    console.log('search:', val);
  }
  
-export default class CreatePatient extends Component {
+class CreatePatient extends Component {
    constructor(props) {
       super(props);
 
@@ -413,3 +414,5 @@ export default class CreatePatient extends Component {
       );
    }
 }
+
+export default AuthGuard(CreatePatient);
