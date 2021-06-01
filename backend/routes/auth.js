@@ -45,20 +45,35 @@ router.post("/register", async (req, res) => {
         password,
         firstname,
         lastname,
-        speciality
+        speciality,
+        type
     } = req.body;
 
+    if (!type) {
+        res.status(400).json({});
+        return;
+    }
+
+    let result;
     password = await bcrypt.hash(password, 10);
-
-    const doc = await Doctor.create({
-        username,
-        password,
-        lastname,
-        speciality,
-        firstname,
-    });
-
-    res.json(doc);
+    if (type === "doctors") {
+        result = await Doctor.create({
+            username,
+            password,
+            lastname,
+            speciality,
+            firstname,
+        });
+    } else {
+        result = await Assisstance.create({
+            username,
+            password,
+            firstname,
+            lastname
+        });
+    }
+    
+    res.json(result);
 
 });
 
