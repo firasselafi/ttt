@@ -3,10 +3,9 @@ const Doctor = require('../models/doctor.model');
 const router = require('express').Router();
 
 
-router.get("/:id/patients", async (req, res) => {
-    const { id } = req.params;
-    console.log(id);
-    const doc = await Doctor.findById(id).populate("patients");
+router.get("/patients", async (req, res) => {
+    const { _id } = req.user;
+    const doc = await Doctor.findById(_id).populate("patients");
 
     res.json({patients: doc.patients});
 });
