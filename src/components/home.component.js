@@ -4,8 +4,10 @@ import { BrowserRouter as Router, Route, Link, Redirect} from "react-router-dom"
 import '../index.css';
 import 'antd/dist/antd.css';
 import { Form, Input, Button, Radio } from 'antd';
+import { UserOutlined , LockOutlined,  } from '@ant-design/icons';
 import axios from 'axios';
-
+import loginBG from "../img/loginBG.jpg";
+import { Hidden } from '@material-ui/core';
 
 
 const layout = {
@@ -18,8 +20,26 @@ const layout = {
   };
   const tailLayout = {
     wrapperCol: {
-      offset: 8,
+      offset: 12,
       span: 16,
+    },
+  };
+  const tailLayout2 = {
+
+    wrapperCol: {
+      offset: 11,
+      span: 12,
+    },
+  };
+
+  const loginStyle = {
+    labelCol: {
+        span: 10,
+      },
+
+    wrapperCol: {
+      offset: 10,
+      span: 6,
     },
   };
 
@@ -70,10 +90,20 @@ export default class Home extends Component {
                     remember: true,
                 }}
                 onFinish={this.onFinish.bind(this)}
+                // STYYYYYYYYLE !!!!
+                style={{
+                    backgroundImage: `url(${loginBG})`,
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                    paddingTop: 280,
+                    paddingBottom: 280,
+                    
+                  }}    
                 >
                     <br/>
                 <Form.Item
-                    label="Username"
+                    
                     name="username"
                     rules={[
                     {
@@ -81,12 +111,14 @@ export default class Home extends Component {
                         message: 'Please input your username!',
                     },
                     ]}
+                    {...loginStyle}
+                   
                 >
-                    <Input />
+                    <Input  placeholder="Username" prefix={<UserOutlined />}/>
                 </Form.Item>
 
                 <Form.Item
-                    label="Password"
+                   
                     name="password"
                     rules={[
                     {
@@ -94,25 +126,35 @@ export default class Home extends Component {
                         message: 'Please input your password!',
                     },
                     ]}
+                    {...loginStyle}
                 >
-                    <Input.Password />
+                    <Input.Password placeholder="Password" prefix={<LockOutlined /> }/>
                 </Form.Item>
 
-
-
-                <Form.Item {...tailLayout}>
-                    <Button type="primary" htmlType="submit">
-                    Submit
-                    </Button>
-                </Form.Item>
-                
-                <Form.Item>
+                <Form.Item {...tailLayout2}>
                     <Radio.Group  onChange={this.onRadioButtonChange.bind(this)} defaultValue="a">
                         <Radio.Button value="doctors">Doctor</Radio.Button>
-                        <Radio.Button value="">Patient</Radio.Button>
+                        <Radio.Button value="" disabled>Patient</Radio.Button>
                         <Radio.Button value="patients">Assistance</Radio.Button>
                     </Radio.Group>
                 </Form.Item>
+
+                <Form.Item {...tailLayout}>
+                    <Button 
+                        
+                        htmlType="submit"
+                        style={{
+                            background: '#6fd9cd',  
+                            color: 'white',
+                            width: '12%'
+                        }}
+
+                    >
+                    Log in
+                    </Button>
+                </Form.Item>
+                
+
                 </Form>
 
             )

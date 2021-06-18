@@ -376,8 +376,10 @@ class CreatePatient extends Component {
                  name='doctor'
                                  value={this.state.doctor}
                                  onChange={this.onChangeDoctor}
+
+
                >
-               <Select
+              <Select
                   showSearch
                   style={{ width: 200 }}
                   placeholder="Select a person"

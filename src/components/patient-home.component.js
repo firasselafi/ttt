@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Link} from "react-router-dom";
 import '../index.css';
 import 'antd/dist/antd.css';
 import { Layout, Menu} from 'antd';
-import { UserSwitchOutlined , UserDeleteOutlined, UserAddOutlined, HomeOutlined  } from '@ant-design/icons';
+import { LogoutOutlined , UserDeleteOutlined, UserAddOutlined, HomeOutlined  } from '@ant-design/icons';
 import CreatePatient from "../components/create-patient.component";
 import Doctor from "./doctor-home.component";
 import EditPatient from "../components/edit-patient.component";
@@ -43,6 +43,13 @@ class PatientHome extends Component {
             <Menu.Item key="3" icon={<UserDeleteOutlined />}>
             <span>Patient List</span>
             <Link to="/patients/list" />
+            </Menu.Item>
+            <Menu.Item key="4" 
+            icon={<LogoutOutlined />}
+            onClick={() => {localStorage.clear(); console.log('local storage deleted!')}}
+            >
+            <span>Log out</span>
+            <Link to="" />
             </Menu.Item>
 
           </Menu>

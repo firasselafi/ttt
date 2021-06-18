@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Menu} from 'antd';
-import { FileAddOutlined  , UserDeleteOutlined, UserAddOutlined, HomeOutlined  } from '@ant-design/icons';
+import { FileAddOutlined  , LogoutOutlined, UserAddOutlined, HomeOutlined  } from '@ant-design/icons';
 import { BrowserRouter as Router, Route, Link} from "react-router-dom";
 import Appointments from './doctorComponents/Appointments.component';
 import Ordonnance from './doctorComponents/Ordonnance.component';
@@ -36,8 +36,11 @@ const Doctor = () => {
             <span>Asgin Prescription</span>
             <Link to="/doctors/prescriptionsAssign" />
             </Menu.Item>
-            <Menu.Item key="4" icon={<UserDeleteOutlined />}>
-            <span>Delete Prescription</span>
+            <Menu.Item key="4" 
+            icon={<LogoutOutlined />}
+            onClick={() => {localStorage.clear(); console.log('local storage deleted!')}}
+            >
+            <span>Log out</span>
             <Link to="" />
             </Menu.Item>
           </Menu>
