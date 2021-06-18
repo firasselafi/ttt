@@ -6,14 +6,14 @@ module.exports = async (req, res, next) => {
     let token = req.get('Authorization');
     const secret = process.env.JWT_SECRET || 'secret';
 
-    token = token.split(" ")[1]; 
     if (!token) {
         res.status(401).json({
             message: 'token not provided'
         });
         return;
-    }
+    }  
 
+    token = token.split(" ")[1]; 
     try {
         jwt.verify(token, secret);
     } catch (err) {
