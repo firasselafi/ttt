@@ -6,7 +6,6 @@ const router = require('express').Router();
 router.get("/patients", async (req, res) => {
     const { _id } = req.user;
     const doc = await Doctor.findById(_id).populate("patients");
-
     res.json({patients: doc.patients});
 });
 
