@@ -127,8 +127,7 @@ export class Appointments extends Component {
         render={(text, record) => (
           <Space size="middle" key={record.lastname}>
 
-              <Button type="primary" onClick={() => window.location = '/patients/edit/'+record.id}>Assign a prescription</Button>
-                <Button type="danger" >test button</Button>
+              <Button type="primary" onClick={() => window.location = '/doctors/prescriptionsAssign/'+record.id}>Assign a prescription</Button>
         
 
           </Space>

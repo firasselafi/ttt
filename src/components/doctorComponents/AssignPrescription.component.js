@@ -7,7 +7,9 @@ import Certification from './Certification.component'
 import { Form, Input, Button, Space } from "antd";
 import { UserOutlined, PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
+import { Typography } from 'antd';
 
+const { Title } = Typography;
 
 
 const layout = {
@@ -45,10 +47,39 @@ export class AssignPrescription extends Component {
    constructor(props) {
       super(props)
       this.state = {
-         ordonnances : ['empty']
+         ordonnances : [],
+         name: null,
       }
    }
    
+   componentDidMount() {
+      this.getName();
+   }
+
+   getName() {
+      const index = window.location.href.lastIndexOf('/') + 1;
+      if (window.location.href.length <= index) {
+         return;
+      }
+
+      const id = window.location.href.slice(index);
+      console.log(id);
+      axios.get('http://localhost:5000/patients/getbyid/' + id, {
+         headers: {
+            authorization: 'Bearer ' + localStorage.getItem('token')
+         }
+      }).then(res => {
+         if (!res.data.length) {
+            return;
+         }
+         const  { firstname, lastname } = res.data[0];
+         this.setState({
+            name: firstname + ' ' + lastname
+         });
+      })
+      .catch((err) => console.log(err));
+   }
+
    addNewOrdonnance() {
       let nOrdonnances = this.state.ordonnances.slice(0);
       nOrdonnances.push(`1`);
@@ -64,12 +95,14 @@ export class AssignPrescription extends Component {
          .then((res) => console.log(res.data)
           
           );
-         
-       //window.location = '/patients/list';
-   }
+            }
    
    render() {
       return (
+
+        <>
+
+      <Title level={2}>{this.state.name || '' }</Title>   
 
          <Form
          
@@ -82,11 +115,7 @@ export class AssignPrescription extends Component {
 
          
          <Consultation onFinish={onFinish} onFinishFailed={onFinishFailed} />
-
- 
-         
          <Ordonnance/>
-
          <Certification />
      
          
@@ -111,6 +140,7 @@ export class AssignPrescription extends Component {
 
 
       </Form>
+      </>
       )
    }
 }

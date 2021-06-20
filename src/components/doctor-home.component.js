@@ -52,7 +52,7 @@ const Doctor = () => {
             <div className="site-layout-background" style={{ padding: 24, minHeight: 700 }}>
 
             <Route path="/doctors/appointments" exact component={Appointments}/>
-            <Route path="/doctors/prescriptionsAssign" exact component={AssignPrescription}/>
+            <Route path="/doctors/prescriptionsAssign" component={AssignPrescription}/>
           {/*<Route path="/patients/edit" exact component={EditPatient}/>
           <Route path="/patients/delete" exact component={DeletePatient}/>*/}
 
