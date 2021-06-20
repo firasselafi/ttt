@@ -5,7 +5,6 @@ import ButtonSubmit from "./ButtonSubmit.component";
 import AddDrugButton from './AddDrugButton.component'
 import Certification from './Certification.component'
 import { Form, Input, Button, Space } from "antd";
-import { UserOutlined, PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { Typography } from 'antd';
 
@@ -82,7 +81,6 @@ export class AssignPrescription extends Component {
 
    addNewOrdonnance() {
       let nOrdonnances = this.state.ordonnances.slice(0);
-      nOrdonnances.push(`1`);
       this.setState({
          ordonnances: nOrdonnances
       })
@@ -91,7 +89,14 @@ export class AssignPrescription extends Component {
    }
 
    onSubmit(consultation) {
-      axios.post("http://localhost:5000/doctors/create", consultation)
+      consultation.patientId = window.location.href.slice(window.location.href.lastIndexOf('/') + 1);
+      console.log(consultation);
+      const token =localStorage.getItem('token');
+      axios.post("http://localhost:5000/doctors/create",consultation, {
+         headers: {
+            authorization: 'Bearer ' + token
+         }
+      })
          .then((res) => console.log(res.data)
           
           );
@@ -133,8 +138,6 @@ export class AssignPrescription extends Component {
             <AddDrugButton onAdd={this.addNewOrdonnance.bind(this)}/>
          </Form.Item> */}
 
-         
-         
          <ButtonSubmit/>
 
 
