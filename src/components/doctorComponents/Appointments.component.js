@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import axios from 'axios';
 import { Table, Button, Space, Popconfirm, Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
@@ -9,9 +10,29 @@ export class Appointments extends Component {
   constructor(props){
     super(props);
     this.state = {
-       
+      patients: [],
     }
   }
+  componentDidMount() {
+    this.getPatients();
+  }
+
+  getPatients = async(id) => { 
+    await axios.get(`http://localhost:5000/doc/patients` , {
+      headers: {
+        authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+   .then(response => {
+     this.setState({patients : response.data.patients });
+     console.log(response.data);
+    })
+   .catch((error) => {
+     console.log(error);
+   });
+
+  }
+
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
       <div style={{ padding: 8 }}>
@@ -118,4 +139,4 @@ export class Appointments extends Component {
   }
 }
 
-export default Appointments
+export default Appointments;

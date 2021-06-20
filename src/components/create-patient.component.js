@@ -143,7 +143,11 @@ class CreatePatient extends Component {
    }
    
    async getDoctors() {
-      return axios.get("http://localhost:5000/doc").then(res => res.data);
+      return axios.get("http://localhost:5000/doc", {
+         headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+         }
+      }).then(res => res.data);
    }
 
    async setDocs() {
