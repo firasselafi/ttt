@@ -1,10 +1,12 @@
 const router = require('express').Router();
 let Fiche = require('../models/fiche.model');
 let Ordonnance = require('../models/ordonnace.model');
-let Certification = require('../models/certification.model')
+let Certification = require('../models/certification.model');
+let Patient = require('../models/patient.model');
+const { sendSMS } = require('../utils');
 // add route
 
-router.route('/create').post((req, res) => {
+router.route('/create').post(async (req, res) => {
 
     // const firstname = req.body.firstname;
     const medicalHistory = req.body.medicalHistory;
@@ -13,6 +15,14 @@ router.route('/create').post((req, res) => {
     const bloodPressure = req.body.bloodPressure;
     const temperature = req.body.temperature;
     const patientId = req.body.patientId;
+    const drugs = req.body.drugs;
+
+    const patient = await Patient.findOne({ id: patientId});
+
+    if (patient && patient.phoneNumber) {
+        const message = drugs.map((drug, i) => `drug ${i + 1} - ${drug.drugName}, ${drug.drugDose} dose per day, for ${drug.drugDuration}`).join('\n');
+        await sendSMS(message, patient.phoneNumber);
+    }
 
     const newFiche = new Fiche({
         patientId,
@@ -26,18 +36,11 @@ router.route('/create').post((req, res) => {
 
 
 
-    const drugs = req.body.drugs;
 
     const newOrdonnance = new Ordonnance({
         patientId,
         drugs,
-        // drugs:[ {
-        //     name: drugs.name,
-        //     dose: drugs.dose,
-            
-        // }]
-
-
+    
     })
 
     const certificateDescription = req.body.certificateDescription;
@@ -46,6 +49,7 @@ router.route('/create').post((req, res) => {
     const newCertification = new Certification ({
         certificateDescription,
         certificateNbrDays,
+        patientId,
     })
 
     // newFiche.save()
